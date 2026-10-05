@@ -1,0 +1,21 @@
+# Librerías del proyecto. Equivale a las dependencies de un package.json.
+# Se instalan con: python -m pip install -r requirements.txt
+# Hay que tener el entorno activo: el prompt debe mostrar (.venv).
+
+# SDK oficial de OpenAI. Trae AsyncOpenAI.
+openai
+
+# SDK oficial de Anthropic (Claude). Trae AsyncAnthropic.
+anthropic
+
+# SDK oficial de Google Gemini.
+google-genai
+
+# SDK de Hugging Face. Trae AsyncInferenceClient.
+huggingface_hub
+
+# Validación de mensajes y configuración (ChatMessage, ModelConfig, ModelResponse).
+pydantic
+
+# Lee el archivo .env y carga las API keys.
+python-dotenv

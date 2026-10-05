@@ -1,0 +1,19 @@
+# Este archivo le dice a Git qué no subir al repositorio.
+# Sirve para dejar afuera secretos, caché y archivos locales de la máquina.
+# Si algo de esta lista se commitea igual, hay que sacarlo del historial.
+
+# Entorno virtual de Python. Tiene las librerías instaladas; no es código nuestro.
+.venv/
+
+# Caché que Python crea al importar módulos. Se regenera solo.
+__pycache__/
+*.py[cod]
+
+# Secretos. .env.example sí se sube; .env, con las keys reales, no.
+.env
+
+# Versión local de Python elegida por pyenv u otra herramienta.
+.python-version
+
+# Basura de macOS.
+.DS_Store
