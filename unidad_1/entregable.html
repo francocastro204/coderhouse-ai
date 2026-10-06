@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Unidad 1 — Orquestador concurrente de modelos</title>
+  <style>
+    @page { margin: 18mm 16mm; }
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      color: #1c1c1c;
+      line-height: 1.45;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 8px 48px;
+    }
+    h1 { font-size: 22px; margin-bottom: 0; }
+    h2 { font-size: 16px; margin-top: 28px; }
+    .meta { color: #444; margin-top: 4px; }
+    p { margin: 8px 0; }
+    pre {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.35;
+      background: #f4f4f4;
+      border: 1px solid #ddd;
+      padding: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    ul { margin: 8px 0; }
+    .nota { font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>Unidad 1. Orquestador concurrente de modelos</h1>
+  <p class="meta">Franco Castro · AI Engineering · Ejercicio opcional</p>
+
+  <h2>Qué es esto</h2>
+  <p class="nota">Este ejercicio no llama a OpenAI, Anthropic ni a ningún otro servicio. Las demoras son <code>asyncio.sleep</code>: imitan la espera de la red y no frenan el programa. No se usa <code>time.sleep</code>.</p>
+  <p class="nota">Hay dos partes, porque la consigna pide las dos cosas a la vez: que las tareas arranquen juntas, y que un tope deje correr solo dos de diez.</p>
+  <ul>
+    <li>Parte 1. Tres corrutinas (<code>gpt_4_call</code>, <code>claude_3_call</code>, <code>local_llama_call</code>) se disparan con <code>asyncio.gather</code>. Un <code>asyncio.timeout</code> de 2 segundos cubre esa ejecución. La tercera duerme 3 segundos, así que aparece <code>TimeoutError</code>. El programa lo captura y sigue.</li>
+    <li>Parte 2. Diez simulaciones se encolan con otro <code>gather</code>. Un <code>asyncio.Semaphore(2)</code> deja activas solo dos. En el log, “en curso” nunca pasa de 2.</li>
+  </ul>
+
+  <h2>Código</h2>
+  <p class="nota">Archivo <code>unidad_1/orquestador.py</code>. Se corre con Python 3.12: <code>python unidad_1/orquestador.py</code>.</p>
+  <pre>"""Ejercicio opcional de la Unidad 1: orquestador concurrente de modelos.
+
+No llama a ninguna API. Las esperas son asyncio.sleep, que simula la red
+sin bloquear el programa. Hay dos partes:
+
+1. Tres modelos se disparan juntos con asyncio.gather. Un timeout de 2
+   segundos corta la ejecución total si alguna tarda de más.
+2. Diez simulaciones se encolan, y un semáforo deja correr solo 2 a la vez.
+"""
+
+import asyncio
+import time
+
+INICIO = time.perf_counter()
+
+
+def marca() -&gt; str:
+    """Segundos desde que arrancó el programa, para leer el orden en el log."""
+    return f"{time.perf_counter() - INICIO:5.2f}s"
+
+
+async def gpt_4_call() -&gt; str:
+    print(f"[{marca()}] gpt_4_call inició", flush=True)
+    await asyncio.sleep(0.4)
+    print(f"[{marca()}] gpt_4_call terminó", flush=True)
+    return "respuesta de gpt-4"
+
+
+async def claude_3_call() -&gt; str:
+    print(f"[{marca()}] claude_3_call inició", flush=True)
+    await asyncio.sleep(0.8)
+    print(f"[{marca()}] claude_3_call terminó", flush=True)
+    return "respuesta de claude"
+
+
+async def local_llama_call() -&gt; str:
+    print(f"[{marca()}] local_llama_call inició", flush=True)
+    await asyncio.sleep(3.0)
+    print(f"[{marca()}] local_llama_call terminó", flush=True)
+    return "respuesta de llama"
+
+
+async def tres_en_paralelo() -&gt; None:
+    """Dispara los tres modelos a la vez y corta todo el grupo a los 2 segundos."""
+    print("Parte 1. Tres modelos con gather. Timeout de 2 segundos sobre el total.", flush=True)
+    try:
+        async with asyncio.timeout(2.0):
+            await asyncio.gather(
+                gpt_4_call(),
+                claude_3_call(),
+                local_llama_call(),
+            )
+    except TimeoutError:
+        print(f"[{marca()}] TimeoutError: la ejecución superó los 2 segundos.", flush=True)
+        print("El programa no se detiene. Sigue con el semáforo.", flush=True)
+
+
+async def simulacion(numero: int, semaforo: asyncio.Semaphore, en_curso: list[int]) -&gt; None:
+    """Una llamada falsa. El semáforo impide que haya más de 2 activas."""
+    async with semaforo:
+        en_curso[0] += 1
+        print(
+            f"[{marca()}] simulación {numero:02d} inicia | en curso: {en_curso[0]}",
+            flush=True,
+        )
+        await asyncio.sleep(0.4)
+        en_curso[0] -= 1
+        print(
+            f"[{marca()}] simulación {numero:02d} termina | en curso: {en_curso[0]}",
+            flush=True,
+        )
+
+
+async def lote_con_semaforo() -&gt; None:
+    """Diez llamadas encoladas. Solo dos pueden estar dentro del semáforo."""
+    print(flush=True)
+    print("Parte 2. Diez simulaciones. Semáforo de 2.", flush=True)
+    semaforo = asyncio.Semaphore(2)
+    en_curso = [0]
+    await asyncio.gather(
+        *(simulacion(numero, semaforo, en_curso) for numero in range(1, 11))
+    )
+
+
+async def main() -&gt; None:
+    await tres_en_paralelo()
+    await lote_con_semaforo()
+    print(f"[{marca()}] Fin. El programa terminó por su cuenta.", flush=True)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())</pre>
+
+  <h2>Salida real</h2>
+  <p class="nota">Corrido con Python 3.12.15. Los tres modelos arrancan en el mismo instante (0.00s). <code>local_llama_call</code> iba a tardar 3 segundos y no llega a terminar: a los 2.01s se captura el timeout y el programa sigue. En la parte 2, “en curso” vale 1 o 2, nunca 3 o más.</p>
+  <pre>Parte 1. Tres modelos con gather. Timeout de 2 segundos sobre el total.
+[ 0.00s] gpt_4_call inició
+[ 0.00s] claude_3_call inició
+[ 0.00s] local_llama_call inició
+[ 0.40s] gpt_4_call terminó
+[ 0.80s] claude_3_call terminó
+[ 2.01s] TimeoutError: la ejecución superó los 2 segundos.
+El programa no se detiene. Sigue con el semáforo.
+
+Parte 2. Diez simulaciones. Semáforo de 2.
+[ 2.01s] simulación 01 inicia | en curso: 1
+[ 2.01s] simulación 02 inicia | en curso: 2
+[ 2.41s] simulación 01 termina | en curso: 1
+[ 2.41s] simulación 02 termina | en curso: 0
+[ 2.41s] simulación 03 inicia | en curso: 1
+[ 2.41s] simulación 04 inicia | en curso: 2
+[ 2.81s] simulación 03 termina | en curso: 1
+[ 2.81s] simulación 04 termina | en curso: 0
+[ 2.81s] simulación 05 inicia | en curso: 1
+[ 2.81s] simulación 06 inicia | en curso: 2
+[ 3.21s] simulación 05 termina | en curso: 1
+[ 3.21s] simulación 06 termina | en curso: 0
+[ 3.21s] simulación 07 inicia | en curso: 1
+[ 3.21s] simulación 08 inicia | en curso: 2
+[ 3.61s] simulación 07 termina | en curso: 1
+[ 3.61s] simulación 08 termina | en curso: 0
+[ 3.61s] simulación 09 inicia | en curso: 1
+[ 3.61s] simulación 10 inicia | en curso: 2
+[ 4.01s] simulación 09 termina | en curso: 1
+[ 4.01s] simulación 10 termina | en curso: 0
+[ 4.01s] Fin. El programa terminó por su cuenta.</pre>
+
+  <h2>Criterios</h2>
+  <ul>
+    <li>No hay <code>time.sleep</code>. La espera es <code>await asyncio.sleep</code>.</li>
+    <li>Las tres tareas de la parte 1 inician en el mismo instante.</li>
+    <li><code>TimeoutError</code> se captura. El proceso sigue y termina solo.</li>
+    <li>De diez simulaciones, solo dos están en curso al mismo tiempo.</li>
+  </ul>
+</body>
+</html>
