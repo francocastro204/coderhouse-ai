@@ -32,7 +32,7 @@ coderhouse-ai/
 
 **Ejercicio opcional 2.** Una cadena LCEL: prompt, modelo y parser. Pregunta qué es LangChain. Gemini responde. Si Gemini falla, prueba Hugging Face.
 
-**Pre-entrega 2.** Otra cadena LCEL. De un texto saca las tecnologías, un nivel de criticidad (baja, media, alta) y un resumen. El resultado es un objeto de Pydantic, no un párrafo suelto.
+**Pre-entrega 2.** Otra cadena LCEL. De un texto saca las tecnologías, un nivel de criticidad (baja, media, alta) y un resumen. El resultado es un objeto de Pydantic, no un párrafo suelto. El detalle, el ejemplo de JSON y cómo correrla están en [unidad_2/pre_entrega/README.md](unidad_2/pre_entrega/README.md).
 
 **`modelos.py`.** Arma Gemini y Hugging Face una sola vez. Las dos partes de la unidad 2 lo importan, por eso no está metido dentro de una sola entrega.
 

@@ -31,6 +31,22 @@ def _clave(nombre: str, *alternativas: str) -> str:
     raise RuntimeError(f"Falta una API key en .env. Revisá: {nombres}")
 
 
+# Los enunciados piden ChatOpenAI (OPENAI_API_KEY) o ChatAnthropic
+# (ANTHROPIC_API_KEY). Esas APIs se cobran aparte y en este repo las claves
+# están vacías. Se usan los cupos gratis: Gemini, y Hugging Face si Gemini falla.
+# Con saldo, el modelo sería uno de estos dos y la cadena no cambiaría:
+#
+# from langchain_openai import ChatOpenAI
+# ChatOpenAI(model="gpt-4o-mini", api_key=os.environ["OPENAI_API_KEY"], temperature=0.2)
+#
+# from langchain_anthropic import ChatAnthropic
+# ChatAnthropic(
+#     model="claude-3-5-haiku-latest",
+#     api_key=os.environ["ANTHROPIC_API_KEY"],
+#     temperature=0.2,
+# )
+
+
 def modelo_gemini() -> ChatGoogleGenerativeAI:
     """Chat de Google. El modelo por defecto es el que ya responde en la pre-entrega 1.
 
