@@ -1,0 +1,21 @@
+# Librerías de la pre-entrega 1.
+# No hace falta instalar este archivo solo: desde la raíz,
+# requirements.txt ya lo incluye.
+
+# SDK oficial de OpenAI. Trae AsyncOpenAI.
+openai
+
+# SDK oficial de Anthropic (Claude). Trae AsyncAnthropic.
+anthropic
+
+# SDK oficial de Google Gemini.
+google-genai
+
+# SDK de Hugging Face. Trae AsyncInferenceClient.
+huggingface_hub
+
+# Validación de mensajes y configuración (ChatMessage, LLMConfig, ModelResponse).
+pydantic
+
+# Lee el archivo .env y carga las API keys.
+python-dotenv

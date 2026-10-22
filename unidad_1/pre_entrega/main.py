@@ -8,17 +8,23 @@ programa no se cae.
 
 Se corre desde la raíz del repo, con el entorno virtual activo:
     source .venv/bin/activate
-    python main.py
+    python -m unidad_1.pre_entrega.main
 """
 
 import asyncio
 import os
+import sys
+from pathlib import Path
+
+RAIZ = Path(__file__).resolve().parents[2]
+if str(RAIZ) not in sys.path:
+    sys.path.insert(0, str(RAIZ))
 
 from dotenv import load_dotenv
 from pydantic import SecretStr
 
-from llm_client.manager import AsyncLLMManager
-from llm_client.schemas import ChatMessage, LLMConfig, Provider
+from unidad_1.pre_entrega.llm_client.manager import AsyncLLMManager
+from unidad_1.pre_entrega.llm_client.schemas import ChatMessage, LLMConfig, Provider
 
 PREGUNTA = [
     ChatMessage(role="user", content="¿Qué es la entropía? Respondé en 2 líneas."),
@@ -49,7 +55,7 @@ async def probar(etiqueta: str, config: LLMConfig) -> None:
 
 
 async def main() -> None:
-    load_dotenv()
+    load_dotenv(RAIZ / ".env")
 
     pruebas = [
         (

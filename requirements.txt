@@ -1,21 +1,19 @@
-# Librerías del proyecto. Equivale a las dependencies de un package.json.
-# Se instalan con: python -m pip install -r requirements.txt
-# Hay que tener el entorno activo: el prompt debe mostrar (.venv).
+# Lista de librerías de todo el repo. Equivale al package.json.
+# Se instala una sola vez, desde la raíz, con el entorno activo:
+#   python -m pip install -r requirements.txt
 
-# SDK oficial de OpenAI. Trae AsyncOpenAI.
-openai
+# Pre-entrega 1.
+-r unidad_1/pre_entrega/requirements.txt
 
-# SDK oficial de Anthropic (Claude). Trae AsyncAnthropic.
-anthropic
+# La unidad 2 usa LangChain, y esa librería pide huggingface_hub 1.x.
+huggingface_hub>=0.33.4,<2
 
-# SDK oficial de Google Gemini.
-google-genai
+# LCEL: el operador | que une prompt, modelo y parser.
+langchain
+langchain-core
 
-# SDK de Hugging Face. Trae AsyncInferenceClient.
-huggingface_hub
+# ChatGoogleGenerativeAI. El modelo principal de la unidad 2.
+langchain-google-genai
 
-# Validación de mensajes y configuración (ChatMessage, ModelConfig, ModelResponse).
-pydantic
-
-# Lee el archivo .env y carga las API keys.
-python-dotenv
+# ChatHuggingFace. El respaldo de la unidad 2.
+langchain-huggingface

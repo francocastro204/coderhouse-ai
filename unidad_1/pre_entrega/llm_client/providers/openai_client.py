@@ -12,8 +12,8 @@ from typing import AsyncGenerator, List
 
 from openai import APIConnectionError, APIError, AsyncOpenAI, RateLimitError
 
-from llm_client.base import BaseLLMClient
-from llm_client.schemas import ChatMessage, ModelResponse, Provider
+from unidad_1.pre_entrega.llm_client.base import BaseLLMClient
+from unidad_1.pre_entrega.llm_client.schemas import ChatMessage, ModelResponse, Provider
 
 
 class OpenAIClient(BaseLLMClient):

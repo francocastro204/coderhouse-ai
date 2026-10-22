@@ -325,10 +325,10 @@ from dotenv import load_dotenv
 - `import os` trae el módulo entero. Se usa `os.getenv(...)`.
 - `from dotenv import load_dotenv` trae una función puntual.
 
-Un archivo `llm_client/schemas.py` se importa así desde la raíz del proyecto:
+Un archivo `unidad_1/pre_entrega/llm_client/schemas.py` se importa así desde la raíz del proyecto:
 
 ```python
-from llm_client.schemas import ChatMessage
+from unidad_1.pre_entrega.llm_client.schemas import ChatMessage
 ```
 
 La carpeta necesita un `__init__.py` para que Python la trate como paquete. Ya está creado.

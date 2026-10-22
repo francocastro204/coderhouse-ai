@@ -16,8 +16,8 @@ from anthropic import (
     RateLimitError as AnthropicRateLimitError,
 )
 
-from llm_client.base import BaseLLMClient
-from llm_client.schemas import ChatMessage, ModelResponse, Provider
+from unidad_1.pre_entrega.llm_client.base import BaseLLMClient
+from unidad_1.pre_entrega.llm_client.schemas import ChatMessage, ModelResponse, Provider
 
 
 class AnthropicClient(BaseLLMClient):

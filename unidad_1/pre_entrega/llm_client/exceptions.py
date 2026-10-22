@@ -6,5 +6,5 @@ dentro de ModelResponse.error. main.py imprime ese texto y sigue.
 
 Este archivo existe para dejar esa decisión escrita. No define clases
 propias: el error controlado es el campo error de ModelResponse, en
-llm_client/schemas.py.
+unidad_1/pre_entrega/llm_client/schemas.py.
 """

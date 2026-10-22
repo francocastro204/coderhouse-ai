@@ -10,12 +10,12 @@ antes de llamar a la red.
 
 from typing import AsyncGenerator, List
 
-from llm_client.base import BaseLLMClient
-from llm_client.providers.anthropic_client import AnthropicClient
-from llm_client.providers.gemini_client import GeminiClient
-from llm_client.providers.huggingface_client import HuggingFaceClient
-from llm_client.providers.openai_client import OpenAIClient
-from llm_client.schemas import ChatMessage, LLMConfig, ModelResponse, Provider
+from unidad_1.pre_entrega.llm_client.base import BaseLLMClient
+from unidad_1.pre_entrega.llm_client.providers.anthropic_client import AnthropicClient
+from unidad_1.pre_entrega.llm_client.providers.gemini_client import GeminiClient
+from unidad_1.pre_entrega.llm_client.providers.huggingface_client import HuggingFaceClient
+from unidad_1.pre_entrega.llm_client.providers.openai_client import OpenAIClient
+from unidad_1.pre_entrega.llm_client.schemas import ChatMessage, LLMConfig, ModelResponse, Provider
 
 
 class AsyncLLMManager:

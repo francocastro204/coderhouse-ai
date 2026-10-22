@@ -18,7 +18,7 @@ Esta clase no llama a ninguna API.
 from abc import ABC, abstractmethod
 from typing import AsyncGenerator, List
 
-from llm_client.schemas import ChatMessage, ModelResponse
+from unidad_1.pre_entrega.llm_client.schemas import ChatMessage, ModelResponse
 
 
 class BaseLLMClient(ABC):

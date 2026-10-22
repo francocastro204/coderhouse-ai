@@ -1,36 +1,62 @@
-# Cliente async unificado de LLMs
+# coderhouse-ai
 
-Este archivo es la puerta de entrada del repositorio. Quien lo clona tiene que poder entender qué es el proyecto, qué leer primero y, cuando el código esté listo, cómo ejecutarlo. La explicación larga vive en `docs/`. Acá queda el resumen y el modo de uso.
+Repo del curso de AI Engineering. Cada unidad tiene dos entregas: la pre-entrega y el ejercicio opcional. Lo que está en la raíz no es una entrega: es lo que comparten las dos.
 
-Pre-entrega 1 del curso de AI Engineering: un cliente en Python 3.12 que habla con varios modelos usando la misma interfaz, con llamadas async, streaming y validación con Pydantic.
+## Mapa
+
+```text
+coderhouse-ai/
+├── README.md                 ← este mapa
+├── requirements.txt          ← librerías de todo el repo
+├── .env                      ← tus API keys. No se sube a GitHub
+├── .env.example              ← la misma lista, sin secretos
+├── docs/                     ← apuntes: arquitectura, Python básico, glosario
+├── unidad_1/
+│   ├── pre_entrega/          ← cliente async. Ya está corregida
+│   │   ├── main.py
+│   │   └── llm_client/
+│   └── ejercicio_opcional/   ← orquestador simulado con asyncio
+│       ├── orquestador.py
+│       └── entregable.pdf
+└── unidad_2/
+    ├── modelos.py            ← Gemini y Hugging Face, compartidos
+    ├── ejercicio_opcional/   ← cadena LCEL simple
+    └── pre_entrega/          ← extrae tecnologías de un texto
+```
+
+## Qué es cada cosa
+
+**Pre-entrega 1.** Un cliente de Python que habla con OpenAI, Anthropic, Gemini y Hugging Face usando la misma interfaz. Las llamadas son async. Si falta una key o la key es inválida, el programa lo informa y sigue. El código está en `unidad_1/pre_entrega/`.
+
+**Ejercicio opcional 1.** No llama a ninguna API. Simula tres modelos en paralelo, corta a los 2 segundos y después deja correr solo 2 de 10 con un semáforo.
+
+**Ejercicio opcional 2.** Una cadena LCEL: prompt, modelo y parser. Pregunta qué es LangChain. Gemini responde. Si Gemini falla, prueba Hugging Face.
+
+**Pre-entrega 2.** Otra cadena LCEL. De un texto saca las tecnologías, un nivel de criticidad (baja, media, alta) y un resumen. El resultado es un objeto de Pydantic, no un párrafo suelto.
+
+**`modelos.py`.** Arma Gemini y Hugging Face una sola vez. Las dos partes de la unidad 2 lo importan, por eso no está metido dentro de una sola entrega.
+
+**`.env`.** Las claves viven acá, en la raíz. Las dos unidades leen el mismo archivo.
+
+**`requirements.txt`.** La lista de librerías, como el `package.json`. La de la pre-entrega 1 está en `unidad_1/pre_entrega/requirements.txt` y la de la raíz la incluye, más LangChain de la unidad 2.
+
+## Cómo correrlo
+
+Desde la raíz, con el entorno activo (el prompt muestra `(.venv)`):
+
+```bash
+source .venv/bin/activate
+
+python -m unidad_1.pre_entrega.main
+python unidad_1/ejercicio_opcional/orquestador.py
+python -m unidad_2.ejercicio_opcional.refactorizacion_lcel_asincrono
+python -m unidad_2.pre_entrega.chain
+```
+
+La pre-entrega 1 pregunta "¿Qué es la entropía?". OpenAI y Anthropic se saltan si esas keys están vacías.
 
 ## Para leer
 
-- [docs/arquitectura.md](docs/arquitectura.md) — mapa del sistema.
+- [docs/arquitectura.md](docs/arquitectura.md) — cómo está armado el cliente de la pre-entrega 1.
 - [docs/python-basico.md](docs/python-basico.md) — Python mínimo, y al final la comparación con JavaScript y TypeScript.
-- [docs/glosario.md](docs/glosario.md) — qué significan LLM, temperatura, Pydantic, asyncio, LangChain, LangGraph y el resto de los términos del curso.
-
-## Cómo probarlo
-
-Con el entorno activo (el prompt muestra `(.venv)`):
-
-```bash
-python main.py
-```
-
-Pregunta "¿Qué es la entropía?" a OpenAI, Anthropic y Gemini, en modo normal y en streaming. Si falta una API key, ese proveedor se omite. Al final manda una key inválida a propósito: el programa tiene que seguir vivo.
-
-## Estado
-
-Clientes de OpenAI, Anthropic y Gemini listos, alineados con el notebook del curso. Hugging Face queda pendiente.
-
-## Proveedores
-
-| `LLM_PROVIDER` | Servicio | Variable |
-| --- | --- | --- |
-| `openai` | OpenAI | `OPENAI_API_KEY` |
-| `anthropic` | Claude | `ANTHROPIC_API_KEY` |
-| `gemini` | Google Gemini | `GEMINI_API_KEY` |
-| `huggingface` | Hugging Face Inference | `HF_TOKEN` |
-
-Copiá `.env.example` a `.env` y completá solo las keys que vayas a usar. El archivo `.env` no se sube a GitHub.
+- [docs/glosario.md](docs/glosario.md) — LLM, temperatura, Pydantic, asyncio, LangChain y el resto.

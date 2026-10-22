@@ -157,7 +157,7 @@ Lista de textos que, si aparecen, cortan la generación. Opcional. Sirve cuando 
 
 La API envía la respuesta por partes, a medida que se genera, en vez de esperar el texto entero. En el código es un generador asíncrono: `yield` de cada fragmento. Quien lo consume hace `async for`.
 
-El modo normal (`generate`) espera el `ModelResponse` completo. El modo streaming imprime cada pedazo al llegar. `main.py` va a probar los dos con la pregunta “¿Qué es la entropía?”.
+El modo normal (`generate`) espera el `ModelResponse` completo. El modo streaming imprime cada pedazo al llegar. `unidad_1/pre_entrega/main.py` va a probar los dos con la pregunta “¿Qué es la entropía?”.
 
 ### Latencia
 
@@ -250,7 +250,7 @@ class ModelConfig(BaseModel):
     max_tokens: int = Field(gt=0)
 ```
 
-`ge` es “mayor o igual”, `le` es “menor o igual”, `gt` es “mayor que”. Esto se escribe en el paso 2, en `llm_client/schemas.py`.
+`ge` es “mayor o igual”, `le` es “menor o igual”, `gt` es “mayor que”. Esto se escribe en el paso 2, en `unidad_1/pre_entrega/llm_client/schemas.py`.
 
 ### `BaseModel`
 
@@ -309,7 +309,7 @@ Software Development Kit. La librería oficial para hablar con una API sin armar
 
 ### python-dotenv
 
-Lee un archivo `.env` y carga esas variables en el proceso. `main.py` lo va a usar para no escribir las API keys dentro del código.
+Lee un archivo `.env` y carga esas variables en el proceso. `unidad_1/pre_entrega/main.py` lo va a usar para no escribir las API keys dentro del código.
 
 ### pip
 
@@ -374,7 +374,7 @@ Clave secreta que demuestra que la cuenta sos vos. Viaja en un header del pedido
 
 ### Variable de entorno
 
-Valor que vive fuera del código, en el sistema o en `.env`. `LLM_PROVIDER=gemini` elige el proveedor sin tocar `main.py`.
+Valor que vive fuera del código, en el sistema o en `.env`. `LLM_PROVIDER=gemini` elige el proveedor sin tocar `unidad_1/pre_entrega/main.py`.
 
 ### `.env`
 
@@ -404,7 +404,7 @@ Volver a intentar una llamada que falló por algo transitorio (red o `429`). Un 
 
 ### Excepción
 
-El mecanismo de Python para señalar un error. Si nadie la captura, el programa se corta. El enunciado pide capturar las de red y de rate limit. En este diseño se convierten en un `ModelResponse` con el error, o en una excepción propia que `main.py` sí espera.
+El mecanismo de Python para señalar un error. Si nadie la captura, el programa se corta. El enunciado pide capturar las de red y de rate limit. En este diseño se convierten en un `ModelResponse` con el error, o en una excepción propia que `unidad_1/pre_entrega/main.py` sí espera.
 
 ### Provider (proveedor)
 
@@ -432,7 +432,7 @@ Clase abstracta. Define el contrato: `generate()` y `stream()`. No llama a ningu
 
 ### Clase abstracta
 
-Clase que no se instancia directo. Obliga a las hijas a implementar ciertos métodos. Así `main.py` puede tratar a cualquier proveedor como un `BaseLLMClient`.
+Clase que no se instancia directo. Obliga a las hijas a implementar ciertos métodos. Así `unidad_1/pre_entrega/main.py` puede tratar a cualquier proveedor como un `BaseLLMClient`.
 
 ### Herencia
 

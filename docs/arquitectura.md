@@ -91,12 +91,12 @@ En vez de esperar el párrafo entero, la API manda trozos. El método de streami
 
 | Pieza | Archivo | Rol |
 | --- | --- | --- |
-| Mensajes y config | `llm_client/schemas.py` | Pydantic valida antes de llamar a la API. Un rol inválido o una temperatura fuera de 0–2 falla acá, con un error claro. |
-| Contrato | `llm_client/base.py` | `BaseLLMClient` dice: todo proveedor tiene `generate()` y `generate_stream()`. |
-| Errores | `llm_client/exceptions.py` | Una key mala, un corte de red o un rate limit se convierten en un error controlado. El `main` no se cae. |
-| Fábrica | `llm_client/manager.py` | `AsyncLLMManager` lee `LLM_PROVIDER` y devuelve el cliente correcto. |
-| Proveedores | `llm_client/providers/` | Cada empresa traduce nuestro formato al suyo y la respuesta de vuelta al nuestro. |
-| Prueba | `main.py` | Carga el `.env` y pregunta “¿Qué es la entropía?” en modo normal y en streaming. |
+| Mensajes y config | `unidad_1/pre_entrega/llm_client/schemas.py` | Pydantic valida antes de llamar a la API. Un rol inválido o una temperatura fuera de 0–2 falla acá, con un error claro. |
+| Contrato | `unidad_1/pre_entrega/llm_client/base.py` | `BaseLLMClient` dice: todo proveedor tiene `generate()` y `generate_stream()`. |
+| Errores | `unidad_1/pre_entrega/llm_client/exceptions.py` | Una key mala, un corte de red o un rate limit se convierten en un error controlado. El `main` no se cae. |
+| Fábrica | `unidad_1/pre_entrega/llm_client/manager.py` | `AsyncLLMManager` lee `LLM_PROVIDER` y devuelve el cliente correcto. |
+| Proveedores | `unidad_1/pre_entrega/llm_client/providers/` | Cada empresa traduce nuestro formato al suyo y la respuesta de vuelta al nuestro. |
+| Prueba | `unidad_1/pre_entrega/main.py` | Carga el `.env` y pregunta “¿Qué es la entropía?” en modo normal y en streaming. |
 
 ## Por qué Pydantic va primero
 
@@ -134,14 +134,9 @@ Para probar sin gastar, el camino más cómodo suele ser **Gemini** (AI Studio) 
 ## Carpetas
 
 ```text
-coderhouse-ai/
-├── README.md
-├── docs/
-│   └── arquitectura.md          ← este mapa
-├── .env.example                 ← nombres de las variables, sin secretos
-├── .gitignore
-├── requirements.txt             ← se completa al instalar (paso siguiente)
+unidad_1/pre_entrega/
 ├── main.py                      ← prueba normal + streaming
+├── requirements.txt
 └── llm_client/
     ├── __init__.py
     ├── schemas.py
@@ -164,4 +159,4 @@ coderhouse-ai/
 4. **OpenAI y Anthropic** — lo que el enunciado exige.
 5. **Gemini y Hugging Face** — los dos extra.
 6. **Manager** — elegir proveedor con `LLM_PROVIDER`.
-7. **main.py, entorno y README de ejecución** — la pregunta de entropía en ambos modos.
+7. **main.py, entorno y README de ejecución** — la pregunta de entropía en ambos modos. El archivo quedó en `unidad_1/pre_entrega/main.py`.
