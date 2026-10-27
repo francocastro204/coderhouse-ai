@@ -18,10 +18,13 @@ coderhouse-ai/
 │   └── ejercicio_opcional/   ← orquestador simulado con asyncio
 │       ├── orquestador.py
 │       └── entregable.pdf
-└── unidad_2/
-    ├── modelos.py            ← Gemini y Hugging Face, compartidos
-    ├── ejercicio_opcional/   ← cadena LCEL simple
-    └── pre_entrega/          ← extrae tecnologías de un texto
+├── unidad_2/
+│   ├── modelos.py            ← Gemini y Hugging Face, compartidos
+│   ├── ejercicio_opcional/   ← cadena LCEL simple
+│   └── pre_entrega/          ← extrae tecnologías de un texto
+└── unidad_3/
+    ├── ejercicio_opcional/   ← similitud coseno, se entrega en PDF
+    └── pre_entrega/          ← RAG local con Chroma
 ```
 
 ## Qué es cada cosa
@@ -33,6 +36,10 @@ coderhouse-ai/
 **Ejercicio opcional 2.** Una cadena LCEL: prompt, modelo y parser. Pregunta qué es LangChain. Gemini responde. Si Gemini falla, prueba Hugging Face.
 
 **Pre-entrega 2.** Otra cadena LCEL. De un texto saca las tecnologías, un nivel de criticidad (baja, media, alta) y un resumen. El resultado es un objeto de Pydantic, no un párrafo suelto. El detalle, el ejemplo de JSON y cómo correrla están en [unidad_2/pre_entrega/README.md](unidad_2/pre_entrega/README.md).
+
+**Ejercicio opcional 3.** Compara significado y coincidencia de palabras. El entregable es el PDF en `unidad_3/ejercicio_opcional/`.
+
+**Pre-entrega 3.** RAG local. Indexa unas notas en Chroma y responde solo con esos fragmentos. Cómo correrla está en [unidad_3/pre_entrega/README.md](unidad_3/pre_entrega/README.md).
 
 **`modelos.py`.** Arma Gemini y Hugging Face una sola vez. Las dos partes de la unidad 2 lo importan, por eso no está metido dentro de una sola entrega.
 
@@ -51,6 +58,7 @@ python -m unidad_1.pre_entrega.main
 python unidad_1/ejercicio_opcional/orquestador.py
 python -m unidad_2.ejercicio_opcional.refactorizacion_lcel_asincrono
 python -m unidad_2.pre_entrega.chain
+python -m unidad_3.pre_entrega.chain
 ```
 
 La pre-entrega 1 pregunta "¿Qué es la entropía?". OpenAI y Anthropic se saltan si esas keys están vacías.

@@ -17,3 +17,6 @@ __pycache__/
 
 # Basura de macOS.
 .DS_Store
+
+# Base vectorial local de la pre-entrega 3. Se regenera al ingestar.
+unidad_3/pre_entrega/vectorstore/

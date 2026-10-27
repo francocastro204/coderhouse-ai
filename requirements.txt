@@ -17,3 +17,12 @@ langchain-google-genai
 
 # ChatHuggingFace. El respaldo de la unidad 2.
 langchain-huggingface
+
+# Unidad 3. cosine_similarity para el ejercicio opcional.
+scikit-learn
+
+# Pre-entrega 3. Base vectorial local, cortes por tokens y RAG.
+chromadb
+langchain-chroma
+langchain-text-splitters
+tiktoken

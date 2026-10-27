@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Unidad 3 — Relevancia semántica y similitud coseno</title>
+  <style>
+    @page { margin: 16mm 15mm; }
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      color: #1c1c1c;
+      line-height: 1.45;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 8px 48px;
+    }
+    h1 { font-size: 22px; margin-bottom: 0; }
+    h2 { font-size: 16px; margin-top: 26px; }
+    .meta { color: #444; margin-top: 4px; }
+    p, li { font-size: 14px; }
+    p { margin: 8px 0; }
+    ol, ul { margin: 8px 0; padding-left: 22px; }
+    pre {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.35;
+      background: #f4f4f4;
+      border: 1px solid #ddd;
+      padding: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    table { border-collapse: collapse; width: 100%; margin: 10px 0 4px; font-size: 13px; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; vertical-align: top; text-align: left; }
+    th { background: #f4f4f4; }
+    .flow { margin: 12px 0; }
+    .box {
+      border: 1.5px solid #1c1c1c;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 0 auto;
+      width: 460px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .arrow { text-align: center; font-size: 16px; line-height: 1.1; margin: 2px 0; }
+    code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Unidad 3. Relevancia semántica y coincidencia de palabras</h1>
+  <p class="meta">Franco Castro · AI Engineering · Ejercicio opcional</p>
+
+  <h2>Qué se evalúa</h2>
+  <p>Un buscador por palabras cuenta cuántas palabras se repiten. Un buscador semántico convierte cada texto en un vector (un embedding) y mide el ángulo entre vectores. Dos frases pueden hablar de lo mismo sin compartir vocabulario. Dos frases pueden compartir palabras y querer decir otra cosa.</p>
+  <p>El concepto elegido es el despliegue de microservicios: publicar en producción un sistema hecho de partes independientes. La consulta de referencia es: «¿Cómo se publican las partes independientes de un sistema para que atiendan tráfico real?»</p>
+
+  <h2>Cinco oraciones del mismo concepto</h2>
+  <p>Dicen lo mismo. Ninguna usa las palabras «microservicio», «despliegue» ni «producción».</p>
+  <table>
+    <tr><th></th><th>Oración</th><th>Cómo lo dice</th></tr>
+    <tr><td>1</td><td>Cada pieza autónoma del sistema se libera en el clúster y empieza a atender tráfico.</td><td>«liberar en el clúster» es publicar. «pieza autónoma» es el servicio.</td></tr>
+    <tr><td>2</td><td>Los módulos desacoplados quedan operativos mediante contenedores.</td><td>«quedan operativos» es el momento en que ya están arriba. El contenedor es el vehículo.</td></tr>
+    <tr><td>3</td><td>El pase a vivo de los componentes aislados se hace detrás del balanceador de carga.</td><td>«pase a vivo» es el release. El balanceador es la puerta por donde entran los pedidos.</td></tr>
+    <tr><td>4</td><td>Las partes independientes de la arquitectura se activan para que los clientes las consuman.</td><td>Mismo hecho, dicho desde quien usa el sistema.</td></tr>
+    <tr><td>5</td><td>La puesta en marcha de las unidades separadas ya está hecha y responden peticiones reales.</td><td>«puesta en marcha» reemplaza a «despliegue». «peticiones reales» reemplaza a «producción».</td></tr>
+  </table>
+  <p>Un buscador por palabras, frente a la consulta, deja estas cinco casi en cero: no hay términos en común. Un embedding las acerca, porque el tema es uno solo.</p>
+
+  <h2>Dos oraciones trampa</h2>
+  <table>
+    <tr><th></th><th>Oración</th><th>Por qué es trampa</th></tr>
+    <tr><td>6</td><td>El servicio de micro-limpieza del edificio es excelente.</td><td>Comparte «servicio» y el prefijo «micro». El tema es limpieza, no software. Es irrelevante.</td></tr>
+    <tr><td>7</td><td>No hay despliegue de microservicios: el monolito sigue intacto y no se publica nada.</td><td>Comparte «despliegue» y «microservicios», pero el sentido es el contrario: no se hace.</td></tr>
+  </table>
+  <p>La trampa 6 engaña a un buscador por palabras sueltas y debería quedar lejos en un espacio de embeddings: el tema no es el mismo.</p>
+  <p>La trampa 7 es la más difícil. Por palabras clave saldría primera, porque repite los términos de la consulta. Por significado no sirve como respuesta: dice que el despliegue no ocurre. Los embeddings suelen acercar igual los textos del mismo tema, y la negación («no hay») pesa menos que el tema. Esa es la limitación que hay que conocer: la similitud coseno mide cercanía de tema, no detecta sola un «no».</p>
+
+  <h2>Similitud coseno con scikit-learn</h2>
+  <p>La similitud coseno es el coseno del ángulo entre dos vectores. Va de −1 a 1. Cerca de 1, apuntan al mismo lado. Cerca de 0, no tienen relación. No mira si las palabras coinciden: mira la dirección de los números.</p>
+  <p>La cuenta es el producto punto dividido por el producto de las longitudes. <code>sklearn.metrics.pairwise.cosine_similarity</code> hace esa cuenta. Recibe matrices de forma <code>(cantidad, dimensiones)</code> y devuelve una matriz de puntajes. Los vectores de abajo son un ejemplo para ver el número. No son los embeddings de las oraciones de arriba.</p>
+  <pre>from sklearn.metrics.pairwise import cosine_similarity
+
+consulta = [[0.80, 0.10, 0.05]]
+oracion_parecida = [[0.76, 0.18, 0.08]]
+trampa = [[0.05, 0.90, 0.10]]
+
+parecida = cosine_similarity(consulta, oracion_parecida)[0][0]
+irrelevante = cosine_similarity(consulta, trampa)[0][0]
+
+print(f"consulta vs oración del mismo tema: {parecida:.3f}")
+print(f"consulta vs trampa de palabras:     {irrelevante:.3f}")</pre>
+  <p>Resultado de esa corrida: la oración del mismo tema da <strong>0.993</strong>. La trampa da <strong>0.184</strong>. El número alto es el texto que se devuelve.</p>
+  <p>El archivo <code>unidad_3/ejercicio_opcional/similitud.py</code> es ese fragmento. Se corre, con el entorno activo, desde la raíz del repo: <code>python unidad_3/ejercicio_opcional/similitud.py</code>.</p>
+
+  <h2>Búsqueda semántica</h2>
+  <p>Desde que la persona escribe hasta que vuelve un documento. Los vectores de los documentos se calculan antes y quedan guardados. En la consulta solo se embebe la pregunta y se compara.</p>
+  <div class="flow">
+    <div class="box">1. La persona escribe la consulta</div>
+    <div class="arrow">↓</div>
+    <div class="box">2. El modelo de embeddings convierte la consulta en un vector</div>
+    <div class="arrow">↓</div>
+    <div class="box">3. Se calcula la similitud coseno contra el vector de cada documento</div>
+    <div class="arrow">↓</div>
+    <div class="box">4. Se elige el documento con el número más alto</div>
+    <div class="arrow">↓</div>
+    <div class="box">5. El sistema devuelve ese documento</div>
+  </div>
+
+  <h2>Conclusión</h2>
+  <p>Las oraciones 1 a 5 sobrevivirían a un ranking semántico y desaparecerían en uno por palabras. La 6 al revés: las palabras alcanzan para colarse y el significado no. La 7 muestra el límite: compartir el tema, incluso para negarlo, deja los vectores cerca. La similitud coseno ordena por dirección. No entiende sola la intención de la frase.</p>
+</body>
+</html>
