@@ -26,3 +26,10 @@ chromadb
 langchain-chroma
 langchain-text-splitters
 tiktoken
+
+# Pre-entrega 4. Pinecone Serverless, BM25 y el recuperador híbrido.
+langchain-pinecone
+langchain-community
+langchain-classic
+pinecone
+rank-bm25

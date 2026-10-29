@@ -1,0 +1,22 @@
+[
+  {
+    "pregunta": "¿Qué hace asyncio.gather cuando recibe varias Task?",
+    "documento_id_esperado": "asyncio"
+  },
+  {
+    "pregunta": "¿Para qué sirve Path.iterdir al recorrer una carpeta?",
+    "documento_id_esperado": "pathlib"
+  },
+  {
+    "pregunta": "¿Qué revisa field_validator dentro de un BaseModel?",
+    "documento_id_esperado": "pydantic"
+  },
+  {
+    "pregunta": "¿Cómo encaja Depends en un endpoint de APIRouter?",
+    "documento_id_esperado": "fastapi"
+  },
+  {
+    "pregunta": "¿Qué diferencia hay entre Handler y Formatter en logging?",
+    "documento_id_esperado": "logging"
+  }
+]

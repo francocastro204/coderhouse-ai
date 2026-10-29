@@ -22,9 +22,11 @@ coderhouse-ai/
 │   ├── modelos.py            ← Gemini y Hugging Face, compartidos
 │   ├── ejercicio_opcional/   ← cadena LCEL simple
 │   └── pre_entrega/          ← extrae tecnologías de un texto
-└── unidad_3/
-    ├── ejercicio_opcional/   ← similitud coseno, se entrega en PDF
-    └── pre_entrega/          ← RAG local con Chroma
+├── unidad_3/
+│   ├── ejercicio_opcional/   ← similitud coseno, se entrega en PDF
+│   └── pre_entrega/          ← RAG local con Chroma
+└── unidad_4/
+    └── pre_entrega/          ← RAG en Pinecone, híbrido y métricas
 ```
 
 ## Qué es cada cosa
@@ -41,9 +43,11 @@ coderhouse-ai/
 
 **Pre-entrega 3.** RAG local. Indexa unas notas en Chroma y responde solo con esos fragmentos. Cómo correrla está en [unidad_3/pre_entrega/README.md](unidad_3/pre_entrega/README.md).
 
+**Pre-entrega 4.** RAG en Pinecone. Sube notas técnicas a un índice Serverless, busca con vectores y BM25, y mide Precision@5 y Recall@5. Cómo replicar el índice está en [unidad_4/pre_entrega/README.md](unidad_4/pre_entrega/README.md).
+
 **`modelos.py`.** Arma Gemini y Hugging Face una sola vez. Las dos partes de la unidad 2 lo importan, por eso no está metido dentro de una sola entrega.
 
-**`.env`.** Las claves viven acá, en la raíz. Las dos unidades leen el mismo archivo.
+**`.env`.** Las claves viven acá, en la raíz. Todas las unidades leen el mismo archivo.
 
 **`requirements.txt`.** La lista de librerías, como el `package.json`. La de la pre-entrega 1 está en `unidad_1/pre_entrega/requirements.txt` y la de la raíz la incluye, más LangChain de la unidad 2.
 
@@ -59,6 +63,8 @@ python unidad_1/ejercicio_opcional/orquestador.py
 python -m unidad_2.ejercicio_opcional.refactorizacion_lcel_asincrono
 python -m unidad_2.pre_entrega.chain
 python -m unidad_3.pre_entrega.chain
+python -m unidad_4.pre_entrega.ingest
+python -m unidad_4.pre_entrega.evaluate
 ```
 
 La pre-entrega 1 pregunta "¿Qué es la entropía?". OpenAI y Anthropic se saltan si esas keys están vacías.
