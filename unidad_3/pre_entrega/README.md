@@ -1,5 +1,7 @@
 # Pre-entrega 3: recuperación semántica local (RAG)
 
+La idea, en corto y con un diagrama, está en [resumen.md](resumen.md).
+
 El script lee unos textos de AndesPay, los corta en fragmentos, los guarda en Chroma en esta carpeta y responde preguntas usando solo esos fragmentos. Si la respuesta no está, dice «No lo sé».
 
 El enunciado nombra OpenAI. Acá el chat y los embeddings son de Gemini (`GEMINI_API_KEY`), el mismo cupo gratis del resto del repo. Indexar y buscar usan el mismo modelo (`gemini-embedding-001`). Si fueran dos modelos distintos, la búsqueda no tendría sentido.

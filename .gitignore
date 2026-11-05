@@ -23,3 +23,6 @@ unidad_3/pre_entrega/vectorstore/
 
 # Memoria del ejercicio de Chroma. Se crea al correr vector_memory.py.
 chroma_db/
+
+# Checkpoints del agente de la pre-entrega 5. Se regeneran al correr.
+unidad_5/pre_entrega/checkpoints.sqlite*

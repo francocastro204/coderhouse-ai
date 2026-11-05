@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>5.1 Asistente de soporte técnico multinivel</title>
+  <style>
+    @page { size: A4; margin: 16mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #1c1917;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    h2 { font-size: 14px; margin: 18px 0 8px; }
+    p { margin: 0 0 8px; }
+    .lead { color: #44403c; margin-bottom: 14px; }
+    pre {
+      background: #f5f5f4;
+      border: 1px solid #e7e5e4;
+      padding: 10px 12px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    table { border-collapse: collapse; width: 100%; margin-top: 6px; }
+    th, td { border: 1px solid #d6d3d1; padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f4; }
+    .flow { margin-top: 8px; }
+    .node, .term {
+      border: 2px solid #1c1917;
+      border-radius: 8px;
+      padding: 8px 12px;
+      text-align: center;
+      width: 220px;
+      margin: 0 auto;
+      background: #fff;
+      font-weight: 600;
+    }
+    .term { border-radius: 999px; width: 120px; background: #fafaf9; }
+    .arrow { text-align: center; color: #44403c; font-size: 12px; margin: 4px 0; }
+    .split { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+    .col { width: 210px; }
+    .col .node, .col .term { width: 100%; }
+    .note { font-size: 11px; font-weight: 400; display: block; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Ejercicio opcional 5.1</h1>
+  <p class="lead">Asistente de soporte técnico multinivel. Grafo de estado en LangGraph.</p>
+
+  <h2>Estado</h2>
+  <pre>class SupportState(TypedDict):
+    messages: Annotated[list[BaseMessage], add_messages]
+    is_escalated: bool
+    attempts: int
+    solved: bool</pre>
+  <p><code>add_messages</code> anexa mensajes. <code>solved</code> le dice a la arista si la solución sirvió. <code>Human_Support</code> es el único nodo que pone <code>is_escalated = True</code>.</p>
+
+  <h2>Grafo</h2>
+  <div class="flow">
+    <div class="term">START</div>
+    <div class="arrow">↓ siempre</div>
+    <div class="node">Triage<span class="note">clasifica la duda</span></div>
+    <div class="arrow">↓ siempre</div>
+    <div class="node">Search_Knowledge<span class="note">simula el RAG y suma attempts</span></div>
+    <div class="arrow">↓ siempre</div>
+    <div class="node">Evaluator<span class="note">no cambia el estado: decide la arista</span></div>
+    <div class="split">
+      <div class="col">
+        <div class="arrow">solved es True</div>
+        <div class="term">END</div>
+      </div>
+      <div class="col">
+        <div class="arrow">no resuelto<br>y attempts &lt; 3</div>
+        <div class="node">vuelve a<br>Search_Knowledge<span class="note">este retorno es el ciclo</span></div>
+      </div>
+      <div class="col">
+        <div class="arrow">attempts &gt;= 3<br>y no resuelto</div>
+        <div class="node">Human_Support<span class="note">is_escalated = True</span></div>
+        <div class="arrow">↓ siempre</div>
+        <div class="term">END</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Arista condicional, desde Evaluator</h2>
+  <table>
+    <tr><th>Condición</th><th>Camino</th></tr>
+    <tr><td><code>solved</code> es <code>True</code></td><td>END</td></tr>
+    <tr><td><code>attempts &gt;= 3</code> y no está resuelto</td><td>Human_Support, después END</td></tr>
+    <tr><td>no está resuelto y <code>attempts &lt; 3</code></td><td>Search_Knowledge</td></tr>
+  </table>
+  <p>El tope de 3 intentos corta el ciclo. Todos los caminos llegan a END.</p>
+</body>
+</html>

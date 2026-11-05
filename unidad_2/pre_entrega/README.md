@@ -1,5 +1,7 @@
 # Pre-entrega 2: pipeline de procesamiento validado
 
+La idea, en corto y con un diagrama, está en [resumen.md](resumen.md).
+
 Recibe un párrafo y devuelve un objeto validado: tecnologías, nivel de criticidad (`baja`, `media` o `alta`) y un resumen técnico.
 
 ## Por qué Gemini

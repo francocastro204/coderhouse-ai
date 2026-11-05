@@ -1,5 +1,7 @@
 # Pre-entrega 4: RAG en Pinecone
 
+La idea, en corto y con un diagrama, está en [resumen.md](resumen.md).
+
 El módulo sube unas notas técnicas a un índice Serverless de Pinecone, busca con un recuperador híbrido (vector + BM25) y mide Precision@5 y Recall@5.
 
 El enunciado nombra `OPENAI_API_KEY` y embeddings `text-embedding-3-small` de 1536 dimensiones. Esa API se cobra aparte, así que la key queda vacía. Los vectores los genera Gemini (`gemini-embedding-001`), recortados a **1536**, el mismo tamaño del índice. Indexar y buscar usan ese mismo modelo. Si el número no coincide, Pinecone rechaza el alta.

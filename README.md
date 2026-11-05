@@ -25,8 +25,15 @@ coderhouse-ai/
 ├── unidad_3/
 │   ├── ejercicio_opcional/   ← similitud coseno, se entrega en PDF
 │   └── pre_entrega/          ← RAG local con Chroma
-└── unidad_4/
-    └── pre_entrega/          ← RAG en Pinecone, híbrido y métricas
+├── unidad_4/
+│   ├── 4.1/                  ← índice Serverless y namespace
+│   ├── 4.2/                  ← lotes y filtro por metadata
+│   └── pre_entrega/          ← RAG en Pinecone, híbrido y métricas
+└── unidad_5/
+    ├── 5.1/                  ← grafo de soporte, con ciclo
+    ├── 5.2/                  ← herramienta con contrato Pydantic
+    ├── 5.3/                  ← ReAct con checkpointer en memoria
+    └── pre_entrega/          ← agente de pedidos, SQLite y traza
 ```
 
 ## Qué es cada cosa
@@ -44,6 +51,8 @@ coderhouse-ai/
 **Pre-entrega 3.** RAG local. Indexa unas notas en Chroma y responde solo con esos fragmentos. Cómo correrla está en [unidad_3/pre_entrega/README.md](unidad_3/pre_entrega/README.md).
 
 **Pre-entrega 4.** RAG en Pinecone. Sube notas técnicas a un índice Serverless, busca con vectores y BM25, y mide Precision@5 y Recall@5. Cómo replicar el índice está en [unidad_4/pre_entrega/README.md](unidad_4/pre_entrega/README.md).
+
+**Pre-entrega 5.** Un agente de pedidos decide qué herramienta llamar, puede llamar más de una, y recuerda la sesión en SQLite. Cómo correrlo está en [unidad_5/pre_entrega/README.md](unidad_5/pre_entrega/README.md).
 
 **`modelos.py`.** Arma Gemini y Hugging Face una sola vez. Las dos partes de la unidad 2 lo importan, por eso no está metido dentro de una sola entrega.
 
@@ -68,6 +77,8 @@ python -m unidad_4.pre_entrega.evaluate
 ```
 
 La pre-entrega 1 pregunta "¿Qué es la entropía?". OpenAI y Anthropic se saltan si esas keys están vacías.
+
+Cada carpeta de entrega tiene un `resumen.md`: la idea en corto y un diagrama. Los dos scripts sueltos de la unidad 3 están en [unidad_3/ejercicios.md](unidad_3/ejercicios.md).
 
 ## Para leer
 

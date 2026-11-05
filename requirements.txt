@@ -33,3 +33,7 @@ langchain-community
 langchain-classic
 pinecone
 rank-bm25
+
+# Unidad 5. Grafos con estado, ciclos y el checkpointer SQLite.
+langgraph
+langgraph-checkpoint-sqlite

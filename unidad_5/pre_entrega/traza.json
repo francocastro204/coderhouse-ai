@@ -1,0 +1,71 @@
+{
+  "thread_id": "cliente-102",
+  "recursion_limit": 10,
+  "preguntas": [
+    "¿Cuántos pedidos tuvo el cliente 102 y cuál fue el total?",
+    "¿y el último?"
+  ],
+  "mensajes": [
+    {
+      "rol": "human",
+      "contenido": "¿Cuántos pedidos tuvo el cliente 102 y cuál fue el total?"
+    },
+    {
+      "rol": "ai",
+      "contenido": "",
+      "tool_calls": [
+        {
+          "name": "contar_pedidos",
+          "args": {
+            "cliente_id": 102
+          }
+        },
+        {
+          "name": "sumar_pedidos",
+          "args": {
+            "cliente_id": 102
+          }
+        }
+      ]
+    },
+    {
+      "rol": "tool",
+      "contenido": "{\"cliente_id\": 102, \"pedidos\": 3}",
+      "name": "contar_pedidos"
+    },
+    {
+      "rol": "tool",
+      "contenido": "{\"cliente_id\": 102, \"total\": 14500}",
+      "name": "sumar_pedidos"
+    },
+    {
+      "rol": "ai",
+      "contenido": "El cliente 102 tuvo 3 pedidos y el total gastado es de 14500."
+    },
+    {
+      "rol": "human",
+      "contenido": "¿y el último?"
+    },
+    {
+      "rol": "ai",
+      "contenido": "",
+      "tool_calls": [
+        {
+          "name": "ultimo_pedido",
+          "args": {
+            "cliente_id": 102
+          }
+        }
+      ]
+    },
+    {
+      "rol": "tool",
+      "contenido": "{\"cliente_id\": 102, \"id\": \"P-933\", \"producto\": \"Monitor\", \"monto\": 8000, \"fecha\": \"2026-03-15\"}",
+      "name": "ultimo_pedido"
+    },
+    {
+      "rol": "ai",
+      "contenido": "El último pedido del cliente 102 fue el P-933, realizado el 2026-03-15, por un monto de 8000 y consistió en un Monitor."
+    }
+  ]
+}
