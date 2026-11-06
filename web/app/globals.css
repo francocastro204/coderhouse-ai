@@ -1,0 +1,222 @@
+:root {
+  color: #1c1917;
+  background: #f3efe4;
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a { color: inherit; }
+
+button, input, textarea { font: inherit; }
+
+.pagina {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 64px;
+}
+
+.cabeza {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.cabeza h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.cabeza p {
+  margin: 6px 0 0;
+  color: #57534e;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  text-decoration: none;
+  border: 1px solid #d6d3d1;
+  background: #fffdf8;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.bloque { margin-top: 36px; }
+
+.bloque h2 {
+  margin: 0 0 14px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.linea {
+  display: grid;
+  gap: 12px;
+}
+
+.unidad {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 12px;
+}
+
+.num {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #1c1917;
+  color: #faf7f2;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.unidad.hoy .num { background: #c2410c; }
+.unidad.falta .num { background: #a8a29e; }
+
+.carta {
+  background: #fffdf8;
+  border: 1px solid #e7e5e4;
+  border-radius: 16px;
+  padding: 14px 16px 16px;
+}
+
+.carta h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.estado {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #78716c;
+}
+
+.carta p { margin: 8px 0 0; }
+
+.pasos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.paso {
+  background: #f5f0e6;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.flecha { color: #a8a29e; }
+
+pre {
+  margin: 12px 0 0;
+  background: #292524;
+  color: #faf7f2;
+  border-radius: 12px;
+  padding: 12px 14px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.palabras {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.palabra {
+  background: #fffdf8;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.palabra strong { display: block; margin-bottom: 4px; }
+
+.palabra span {
+  color: #44403c;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.chat {
+  background: #fffdf8;
+  border: 1px solid #e7e5e4;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.mensajes { display: grid; gap: 10px; min-height: 48px; }
+
+.burbuja {
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.burbuja.vos { background: #1c1917; color: #faf7f2; justify-self: end; max-width: 80%; }
+.burbuja.ia { background: #f5f0e6; max-width: 90%; }
+.modelo { display: block; margin-top: 6px; font-size: 12px; color: #78716c; }
+
+form { display: flex; gap: 8px; margin-top: 12px; }
+
+input {
+  flex: 1;
+  border: 1px solid #d6d3d1;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+button[type="submit"] {
+  border: 0;
+  background: #c2410c;
+  color: white;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  cursor: pointer;
+}
+
+button:disabled { opacity: 0.6; cursor: wait; }
+
+.nota {
+  margin: 8px 0 0;
+  color: #78716c;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+}
+
+@media (max-width: 640px) {
+  .cabeza { display: block; }
+  .nav { margin-top: 12px; }
+  .cabeza h1 { font-size: 28px; }
+}

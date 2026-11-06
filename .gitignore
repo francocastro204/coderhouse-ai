@@ -26,3 +26,7 @@ chroma_db/
 
 # Checkpoints del agente de la pre-entrega 5. Se regeneran al correr.
 unidad_5/pre_entrega/checkpoints.sqlite*
+
+# La guía local. node_modules y la build no se suben.
+web/node_modules/
+web/.next/
