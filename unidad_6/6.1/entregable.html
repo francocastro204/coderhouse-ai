@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>6.1 Quejas de Twitter: topología jerárquica</title>
+  <style>
+    @page { size: A4; margin: 14mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #1c1917;
+      font-size: 12.5px;
+      line-height: 1.4;
+    }
+    h1 { font-size: 18px; margin: 0 0 6px; font-weight: 600; }
+    h2 { font-size: 13px; margin: 14px 0 6px; font-weight: 600; }
+    p { margin: 0 0 8px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #d6d3d1; padding: 5px 7px; text-align: left; vertical-align: top; }
+    th { background: #f5f5f4; }
+    ol { margin: 0; padding-left: 18px; }
+    li { margin: 0 0 3px; }
+    .flujo { margin-top: 8px; }
+    .caja {
+      border: 2px solid #1c1917;
+      border-radius: 8px;
+      padding: 6px 10px;
+      text-align: center;
+      width: 210px;
+      margin: 0 auto;
+      font-weight: 600;
+    }
+    .fila { display: flex; justify-content: center; gap: 16px; }
+    .flecha { text-align: center; color: #78716c; margin: 3px 0; }
+  </style>
+</head>
+<body>
+  <h1>6.1 Quejas de Twitter: topología jerárquica</h1>
+  <p>Una tienda recibe un tuit de queja. Hay que leer el ánimo, mirar el pedido y contestar en público. Un supervisor reparte. Tres especialistas hacen una sola cosa. Ninguno publica solo.</p>
+
+  <h2>Agentes</h2>
+  <table>
+    <tr><th>Agente</th><th>Qué hace</th><th>Herramienta</th></tr>
+    <tr><td>Supervisor</td><td>Lee el tuit, pide el ánimo y el pedido, y solo él publica. Si falta un dato, manda a repetir una vez.</td><td>publicar_respuesta</td></tr>
+    <tr><td>Sentimiento</td><td>Dice si el tuit es enojo, neutro o calma, y de qué se queja. No mira pedidos.</td><td>clasificar_sentimiento</td></tr>
+    <tr><td>Pedidos</td><td>Busca el pedido por el usuario o el número del tuit. Devuelve estado, fecha y si ya hubo reembolso. No redacta.</td><td>buscar_pedido</td></tr>
+    <tr><td>Redactor</td><td>Escribe la respuesta con el ánimo y el estado. No inventa un reembolso ni una fecha.</td><td>ninguna: solo redacta</td></tr>
+  </table>
+
+  <h2>Flujo</h2>
+  <ol>
+    <li>Llega el tuit al supervisor. Ejemplo: «Llevo 9 días y el pedido 8841 no aparece».</li>
+    <li>El supervisor pide en paralelo el ánimo y el pedido. Los especialistas no se hablan.</li>
+    <li>Sentimiento devuelve: enojo, tema envío.</li>
+    <li>Pedidos devuelve: 8841, en tránsito, salió hace 6 días, sin reembolso.</li>
+    <li>El supervisor junta esos dos aportes y se los pasa al redactor. El redactor no ve el hilo entero.</li>
+    <li>El redactor escribe una respuesta corta: reconoce la demora y dice el estado real.</li>
+    <li>El supervisor revisa: ¿cita el pedido? ¿no promete plata que la base no tiene? Si sirve, publica. Si no, pide una sola reescritura.</li>
+    <li>Tope: dos vueltas. Después se publica la última versión o se escala a una persona.</li>
+  </ol>
+
+  <div class="flujo">
+    <div class="caja">Tuit</div>
+    <div class="flecha">↓</div>
+    <div class="caja">Supervisor</div>
+    <div class="flecha">↓ pide las dos cosas</div>
+    <div class="fila">
+      <div class="caja">Sentimiento</div>
+      <div class="caja">Pedidos</div>
+    </div>
+    <div class="flecha">↓ vuelven al supervisor</div>
+    <div class="caja">Redactor</div>
+    <div class="flecha">↓</div>
+    <div class="caja">Supervisor publica o pide una vez más</div>
+  </div>
+
+  <h2>Por qué jerarquía</h2>
+  <p>La respuesta sale en público y a nombre de la tienda. Alguien tiene que ver el pedido antes de prometer algo. En una red de pares, el redactor podría contestar en cuanto ve el tuit, sin esperar la base, o dos agentes podrían pisarse el texto. Acá el orden lo marca el supervisor: primero los datos, después la frase, y solo él publica.</p>
+  <p>Sentimiento y pedidos sí pueden trabajar a la vez. Eso no los vuelve pares: los dos le devuelven el resultado al mismo jefe.</p>
+</body>
+</html>
