@@ -56,11 +56,11 @@ respuesta = "No lo sé"`,
   {
     numero: 6,
     titulo: "Varios agentes, un jefe",
-    estado: "hoy",
-    idea: "Un supervisor reparte el trabajo. Los especialistas hacen una sola cosa.",
-    pasos: ["Supervisor", "Especialista", "Revisión"],
-    codigo: `# el jefe no escribe el informe
-# elige quién lo hace`,
+    estado: "lista",
+    idea: "El jefe no responde. Manda a buscar la política y después a calcular.",
+    pasos: ["Supervisor", "Investigador", "Analista"],
+    codigo: `supervisor → investigador → analista
+# sin las dos herramientas, no cierra`,
   },
   {
     numero: 7,
@@ -97,5 +97,6 @@ export const glosario: { palabra: string; significado: string }[] = [
   { palabra: "Grafo", significado: "Cajas unidas por flechas. Una flecha puede volver atrás." },
   { palabra: "Herramienta", significado: "Una función real. El modelo la pide. El programa la ejecuta." },
   { palabra: "thread_id", significado: "El nombre de la conversación. El mismo id recuerda lo anterior." },
+  { palabra: "Supervisor", significado: "El que reparte. No busca ni calcula: elige al especialista y decide si ya se puede cerrar." },
   { palabra: "Alucinación", significado: "El modelo inventa un dato con seguridad. Por eso el RAG dice «No lo sé»." },
 ];

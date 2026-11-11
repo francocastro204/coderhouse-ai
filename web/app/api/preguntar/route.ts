@@ -4,7 +4,8 @@ import { NextResponse } from "next/server";
 
 const SISTEMA = `Respondes en español, muy corto, con palabras simples.
 Solo contestas la pregunta. No agregues un resumen del curso.
-Si no lo sabes, dilo. No inventes datos ni claves. Máximo 4 líneas.`;
+Si no lo sabes, dilo. No inventes datos ni claves. Máximo 4 líneas.
+Dato de este repo, por si preguntan: las unidades 1 a 6 ya están. La 6 es un supervisor que manda a un investigador a buscar una política y a un analista a calcular si el caso entra. La 7 y la 8 todavía no.`;
 
 function leerEnv(): Record<string, string> {
   const archivo = path.join(process.cwd(), "..", ".env");
@@ -22,27 +23,36 @@ function leerEnv(): Record<string, string> {
 async function gemini(pregunta: string, env: Record<string, string>) {
   const clave = env.GEMINI_API_KEY || env.GOOGLE_API_KEY;
   if (!clave) throw new Error("Falta GEMINI_API_KEY");
-  const modelo = env.GEMINI_MODEL || "gemini-3.1-flash-lite";
-  const respuesta = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": clave },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SISTEMA }] },
-        contents: [{ role: "user", parts: [{ text: pregunta }] }],
-        generationConfig: { temperature: 0.3, maxOutputTokens: 400 },
-      }),
-    },
-  );
-  const data = (await respuesta.json()) as {
-    candidates?: { content?: { parts?: { text?: string }[] } }[];
-    error?: { message?: string };
-  };
-  if (!respuesta.ok) throw new Error(data.error?.message || "Gemini no respondió");
-  const texto = data.candidates?.[0]?.content?.parts?.map((parte) => parte.text || "").join("") || "";
-  if (!texto) throw new Error("Gemini volvió vacío");
-  return { respuesta: texto.trim(), modelo: `Gemini · ${modelo}` };
+  const preferido = env.GEMINI_MODEL || "gemini-3.1-flash-lite";
+  const modelos = preferido === "gemini-flash-lite-latest" ? [preferido] : [preferido, "gemini-flash-lite-latest"];
+  let ultimo = "Gemini no respondió";
+  for (const modelo of modelos) {
+    const respuesta = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": clave },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: SISTEMA }] },
+          contents: [{ role: "user", parts: [{ text: pregunta }] }],
+          generationConfig: { temperature: 0.3, maxOutputTokens: 400 },
+        }),
+      },
+    );
+    const data = (await respuesta.json()) as {
+      candidates?: { content?: { parts?: { text?: string }[] } }[];
+      error?: { message?: string };
+    };
+    if (!respuesta.ok) {
+      ultimo = data.error?.message || "Gemini no respondió";
+      if (respuesta.status === 503) continue;
+      throw new Error(ultimo);
+    }
+    const texto = data.candidates?.[0]?.content?.parts?.map((parte) => parte.text || "").join("") || "";
+    if (!texto) throw new Error("Gemini volvió vacío");
+    return { respuesta: texto.trim(), modelo: `Gemini · ${modelo}` };
+  }
+  throw new Error(ultimo);
 }
 
 async function huggingFace(pregunta: string, env: Record<string, string>) {
