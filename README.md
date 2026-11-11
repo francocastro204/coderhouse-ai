@@ -29,11 +29,13 @@ coderhouse-ai/
 │   ├── 4.1/                  ← índice Serverless y namespace
 │   ├── 4.2/                  ← lotes y filtro por metadata
 │   └── pre_entrega/          ← RAG en Pinecone, híbrido y métricas
-└── unidad_5/
-    ├── 5.1/                  ← grafo de soporte, con ciclo
-    ├── 5.2/                  ← herramienta con contrato Pydantic
-    ├── 5.3/                  ← ReAct con checkpointer en memoria
-    └── pre_entrega/          ← agente de pedidos, SQLite y traza
+├── unidad_5/
+│   ├── 5.1/                  ← grafo de soporte, con ciclo
+│   ├── 5.2/                  ← herramienta con contrato Pydantic
+│   ├── 5.3/                  ← ReAct con checkpointer en memoria
+│   └── pre_entrega/          ← agente de pedidos, SQLite y traza
+└── unidad_6/
+    └── pre_entrega/          ← supervisor, investigador y analista
 ```
 
 ## Qué es cada cosa
@@ -53,6 +55,8 @@ coderhouse-ai/
 **Pre-entrega 4.** RAG en Pinecone. Sube notas técnicas a un índice Serverless, busca con vectores y BM25, y mide Precision@5 y Recall@5. Cómo replicar el índice está en [unidad_4/pre_entrega/README.md](unidad_4/pre_entrega/README.md).
 
 **Pre-entrega 5.** Un agente de pedidos decide qué herramienta llamar, puede llamar más de una, y recuerda la sesión en SQLite. Cómo correrlo está en [unidad_5/pre_entrega/README.md](unidad_5/pre_entrega/README.md).
+
+**Pre-entrega 6.** Un supervisor manda la pregunta primero a quien busca la política y después a quien calcula si el caso entra. Cómo correrlo está en [unidad_6/pre_entrega/README.md](unidad_6/pre_entrega/README.md).
 
 **`modelos.py`.** Arma Gemini y Hugging Face una sola vez. Las dos partes de la unidad 2 lo importan, por eso no está metido dentro de una sola entrega.
 

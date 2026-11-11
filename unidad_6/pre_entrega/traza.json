@@ -1,0 +1,73 @@
+{
+  "pregunta": "Un cliente quiere devolver un producto de 14500 pesos a los 12 días. Busca la política de devoluciones y decide si corresponde el reembolso.",
+  "recursion_limit": 20,
+  "ruta": [
+    "supervisor",
+    "investigador",
+    "supervisor",
+    "analista",
+    "supervisor",
+    "validar",
+    "sintesis"
+  ],
+  "pasos_supervisor": 3,
+  "task_completed": true,
+  "aportes": [
+    {
+      "agente": "investigador",
+      "texto": "Política de devoluciones de Tienda Lumen: el cliente puede devolver hasta 10 días después de la compra, si el monto es de hasta 20000 pesos y el producto no tiene uso.",
+      "herramientas": [
+        "buscar_documentos"
+      ]
+    },
+    {
+      "agente": "analista",
+      "texto": "No corresponde. pasó el plazo: van 12 días y el límite es 10. El monto 14500 entra en el tope de 20000.",
+      "herramientas": [
+        "validar_reembolso"
+      ]
+    }
+  ],
+  "respuesta": "Según la política del investigador, el plazo máximo para devoluciones es de 10 días y el cliente lo hizo a los 12 días.\nPor lo tanto, según el veredicto del analista, no corresponde el reembolso.",
+  "mensajes": [
+    {
+      "rol": "human",
+      "contenido": "Un cliente quiere devolver un producto de 14500 pesos a los 12 días. Busca la política de devoluciones y decide si corresponde el reembolso."
+    },
+    {
+      "rol": "ai",
+      "contenido": "Supervisor envía a investigador: Busca la política de devoluciones de Tienda Lumen respecto a plazos y montos para devoluciones.",
+      "name": "supervisor"
+    },
+    {
+      "rol": "ai",
+      "contenido": "Política de devoluciones de Tienda Lumen: el cliente puede devolver hasta 10 días después de la compra, si el monto es de hasta 20000 pesos y el producto no tiene uso.",
+      "name": "investigador"
+    },
+    {
+      "rol": "ai",
+      "contenido": "Supervisor envía a analista: Evalúa si corresponde el reembolso según los días transcurridos y la política encontrada.",
+      "name": "supervisor"
+    },
+    {
+      "rol": "ai",
+      "contenido": "No corresponde. pasó el plazo: van 12 días y el límite es 10. El monto 14500 entra en el tope de 20000.",
+      "name": "analista"
+    },
+    {
+      "rol": "ai",
+      "contenido": "Supervisor envía a validar.",
+      "name": "supervisor"
+    },
+    {
+      "rol": "ai",
+      "contenido": "Validación: hay búsqueda y análisis. Se puede cerrar.",
+      "name": "validar"
+    },
+    {
+      "rol": "ai",
+      "contenido": "Según la política del investigador, el plazo máximo para devoluciones es de 10 días y el cliente lo hizo a los 12 días.\nPor lo tanto, según el veredicto del analista, no corresponde el reembolso.",
+      "name": "sintesis"
+    }
+  ]
+}
