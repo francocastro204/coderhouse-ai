@@ -40,7 +40,8 @@ coderhouse-ai/
     ├── 6.3/                  ← estado compartido, cada nodo escribe su campo
     └── pre_entrega/          ← supervisor, investigador y analista
 └── unidad_7/
-    └── 7.1/                  ← trazas del orquestador en Phoenix local
+    ├── 7.1/                  ← trazas del orquestador en Phoenix local
+    └── 7.2/                  ← FastAPI encola en Redis y devuelve un job_id
 ```
 
 ## Qué es cada cosa

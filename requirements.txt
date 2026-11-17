@@ -42,3 +42,6 @@ langgraph-checkpoint-sqlite
 arize-phoenix
 openinference-instrumentation-langchain
 openinference-instrumentation-google-genai
+
+# Unidad 7.2. La API encola el trabajo y el cliente pregunta el estado.
+redis
