@@ -34,3 +34,6 @@ web/.next/
 # Phoenix y el Chroma del ejercicio 7.1. Se regeneran al correr.
 unidad_7/7.1/phoenix_data/
 unidad_7/7.1/vectorstore/
+
+# Volcado local de Redis. Lo crea redis-server en la carpeta donde arrancó.
+dump.rdb
