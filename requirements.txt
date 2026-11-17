@@ -37,3 +37,8 @@ rank-bm25
 # Unidad 5. Grafos con estado, ciclos y el checkpointer SQLite.
 langgraph
 langgraph-checkpoint-sqlite
+
+# Unidad 7. Phoenix local y la instrumentación de LangChain y Gemini.
+arize-phoenix
+openinference-instrumentation-langchain
+openinference-instrumentation-google-genai

@@ -30,3 +30,7 @@ unidad_5/pre_entrega/checkpoints.sqlite*
 # La guía local. node_modules y la build no se suben.
 web/node_modules/
 web/.next/
+
+# Phoenix y el Chroma del ejercicio 7.1. Se regeneran al correr.
+unidad_7/7.1/phoenix_data/
+unidad_7/7.1/vectorstore/

@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "ok": true,
+    "pregunta": "Un cliente quiere devolver un producto de 14500 pesos a los 12 días. Busca la política de devoluciones y decide si corresponde el reembolso.",
+    "respuesta": "Según la política, el plazo máximo para devoluciones es de 10 días y ya pasaron 12. Por lo tanto, el analista determina que no corresponde el reembolso."
+  },
+  {
+    "n": 2,
+    "ok": true,
+    "pregunta": "Un cliente quiere devolver un producto de 8000 pesos a los 3 días. Busca la política de devoluciones y decide si corresponde el reembolso.",
+    "respuesta": "Según la política del investigador, se permiten devoluciones hasta 10 días y hasta 20000 pesos. \nEl analista determina que corresponde el reembolso porque cumple con ambos plazos y montos."
+  },
+  {
+    "n": 3,
+    "ok": true,
+    "pregunta": "Un cliente quiere devolver un producto de 25000 pesos a los 5 días. Busca la política de devoluciones y decide si corresponde el reembolso.",
+    "respuesta": "No corresponde. El analista indica que no corresponde porque el monto de 25000 pesos supera el tope permitido de 20000 pesos según la política de Tienda Lumen."
+  },
+  {
+    "n": 4,
+    "ok": true,
+    "pregunta": "Un cliente quiere devolver un producto de 18000 pesos a los 10 días. Busca la política de devoluciones y decide si corresponde el reembolso.",
+    "respuesta": "Corresponde el reembolso, ya que según la política de devoluciones el plazo es de hasta 10 días y el monto es menor al tope de 20000 pesos."
+  },
+  {
+    "n": 5,
+    "ok": true,
+    "pregunta": "Un cliente quiere devolver un producto de 5000 pesos a los 15 días. Busca la política de devoluciones y decide si corresponde el reembolso.",
+    "respuesta": "Según la política de Tienda Lumen, el plazo máximo para devoluciones es de 10 días, por lo que a los 15 días ya no corresponde. El aporte del investigador sobre el estado sin uso falta. El analista determina que no corresponde el reembolso."
+  },
+  {
+    "n": "fallo",
+    "ok": false,
+    "pregunta": "Un cliente quiere devolver un producto de 14500 pesos a los 12 días. Busca la política de devoluciones y decide si corresponde el reembolso.",
+    "error": "Base de políticas no disponible"
+  }
+]

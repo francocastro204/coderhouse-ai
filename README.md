@@ -34,11 +34,13 @@ coderhouse-ai/
 │   ├── 5.2/                  ← herramienta con contrato Pydantic
 │   ├── 5.3/                  ← ReAct con checkpointer en memoria
 │   └── pre_entrega/          ← agente de pedidos, SQLite y traza
-└── unidad_6/
+├── unidad_6/
     ├── 6.1/                  ← diseño: quejas de Twitter, topología jerárquica
     ├── 6.2/                  ← supervisor que elige Analista, Escritor o fin
     ├── 6.3/                  ← estado compartido, cada nodo escribe su campo
     └── pre_entrega/          ← supervisor, investigador y analista
+└── unidad_7/
+    └── 7.1/                  ← trazas del orquestador en Phoenix local
 ```
 
 ## Qué es cada cosa

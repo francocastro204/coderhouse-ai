@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Franco Castro Miranda" />
+  <meta name="reply-to" content="dev.francoscm@gmail.com" />
+  <title>Instrumentación y análisis de trazas con Phoenix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,650&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1917;
+      --muted: #57534e;
+      --paper: #f3efe6;
+      --card: #fffcf8;
+      --line: #e7e0d4;
+      --copper: #9a3412;
+      --ok: #166534;
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Outfit, "Helvetica Neue", sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+    h1, h2, .display {
+      font-family: Fraunces, Georgia, serif;
+      letter-spacing: -0.03em;
+    }
+    .page { max-width: 920px; }
+    .kicker {
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--copper);
+    }
+    .sheet {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 1.25rem;
+      padding: 1.75rem 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .sheet { padding: 2.25rem 2.5rem; }
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: 1.25rem 1.1rem 1.1rem;
+      height: 100%;
+    }
+    .stat b {
+      display: block;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 1.85rem;
+      font-weight: 560;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+    .stat span { color: var(--muted); font-size: 0.92rem; }
+    .table { --bs-table-bg: transparent; }
+    .table > :not(caption) > * > * {
+      padding: 0.85rem 0.75rem;
+      border-bottom-color: var(--line);
+    }
+    .table thead th {
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      border-bottom-width: 1px;
+    }
+    .ok { color: var(--ok); font-weight: 600; }
+    .parcial { color: var(--copper); font-weight: 600; }
+    .callout {
+      border-left: 3px solid var(--copper);
+      padding: 0.25rem 0 0.25rem 1.1rem;
+      color: var(--ink);
+    }
+    .trace {
+      background: #1c1917;
+      color: #f5f0e8;
+      border-radius: 1rem;
+      padding: 1.25rem 1.35rem;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+    .trace .rowline { display: flex; gap: 0.65rem; align-items: baseline; }
+    .trace .d1 { padding-left: 1.15rem; }
+    .trace .d2 { padding-left: 2.3rem; }
+    .trace .d3 { padding-left: 3.45rem; }
+    .pill {
+      font-family: Outfit, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 0.1rem 0.45rem;
+      background: #44403c;
+      color: #e7e5e4;
+    }
+    .pill.bad { background: #9a3412; color: #fff7ed; }
+    .pill.good { background: #365314; color: #ecfccb; }
+    .trace-error { background: #431407; }
+    code {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.92em;
+      color: var(--copper);
+    }
+    footer { color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main class="page mx-auto px-3 px-md-4 py-5 my-md-3">
+    <header class="mb-5">
+      <p class="kicker mb-3">Unidad 7.1 · Tienda Lumen</p>
+      <h1 class="display-5 mb-3">Instrumentación y análisis de trazas con Phoenix</h1>
+      <p class="lead fs-5 text-secondary mb-0">Orquestador de la unidad 6 contra Phoenix local, proyecto tienda-lumen, en localhost:6006. El modelo es gemini-flash-lite-latest. En las trazas el proveedor lo nombra gemini-3.5-flash-lite. La búsqueda pasa por Chroma, colección politicas-lumen.</p>
+    </header>
+
+    <section class="row g-3 mb-5">
+      <div class="col-6 col-lg-3"><div class="stat"><b>57,6 s</b><span>Grafo más largo. Casi todo es espera al modelo.</span></div></div>
+      <div class="col-6 col-lg-3"><div class="stat"><b>0,46 s</b><span>Recuperación en esa misma traza.</span></div></div>
+      <div class="col-6 col-lg-3"><div class="stat"><b>2,8 ms</b><span>Cálculo local del reembolso.</span></div></div>
+      <div class="col-6 col-lg-3"><div class="stat"><b>0,0014 USD</b><span>Costo estimado. En free tier no se cobró.</span></div></div>
+    </section>
+
+    <section class="sheet mb-4">
+      <h2 class="h3 mb-3">Las cinco consultas</h2>
+      <p>Las cinco cerraron con la regla de la base: hasta 10 días y hasta 20000 pesos.</p>
+      <div class="table-responsive">
+        <table class="table align-middle mb-4">
+          <thead>
+            <tr><th>Caso</th><th>Decisión</th><th>¿Apoyada en la política?</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>14500 pesos, 12 días</td><td>No. Pasó el plazo de 10.</td><td class="ok">Sí</td></tr>
+            <tr><td>8000 pesos, 3 días</td><td>Sí. Entra en plazo y en tope.</td><td class="ok">Sí</td></tr>
+            <tr><td>25000 pesos, 5 días</td><td>No. El monto pasa el tope de 20000.</td><td class="ok">Sí</td></tr>
+            <tr><td>18000 pesos, 10 días</td><td>Sí. 10 días entra y 18000 no pasa el tope.</td><td class="ok">Sí</td></tr>
+            <tr><td>5000 pesos, 15 días</td><td>No. 15 días pasa el plazo de 10.</td><td class="parcial">La decisión sí. Una frase no.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout mb-0">En la quinta, la síntesis dice: «El aporte del investigador sobre el estado sin uso falta». El documento recuperado sí dice que el producto no tiene que tener uso. Esa frase es una alucinación. El no al reembolso sigue siendo correcto, porque 15 es mayor que 10.</p>
+    </section>
+
+    <section class="sheet mb-4">
+      <h2 class="h3 mb-3">Jerarquía en el dashboard</h2>
+      <p>Una consulta que termina bien queda así. El agente llama a la herramienta y al modelo.</p>
+      <div class="trace mb-4">
+        <div class="rowline"><span>LangGraph</span> <span class="pill">grafo</span></div>
+        <div class="rowline d1"><span>supervisor</span> <span>→ ChatGoogleGenerativeAI</span> <span class="pill">modelo</span></div>
+        <div class="rowline d1"><span>investigador</span> <span>→ agent</span> <span>→ ChatGoogleGenerativeAI</span></div>
+        <div class="rowline d2"><span>→ buscar_documentos</span> <span>→ VectorStoreRetriever</span> <span class="pill">base</span></div>
+        <div class="rowline d1"><span>analista</span> <span>→ agent</span> <span>→ ChatGoogleGenerativeAI</span></div>
+        <div class="rowline d2"><span>→ validar_reembolso</span> <span class="pill">herramienta</span></div>
+        <div class="rowline d1"><span>validar</span></div>
+        <div class="rowline d1"><span>sintesis</span> <span>→ ChatGoogleGenerativeAI</span></div>
+      </div>
+      <p class="mb-0">chroma.buscar_politica es el span propio de la base. Adentro está EmbedContent, el embedding. En esta sesión ese span salió como traza raíz, al lado del grafo, no como hijo de buscar_documentos. El tiempo de la base igual está dentro del grafo, en VectorStoreRetriever.</p>
+    </section>
+
+    <section class="sheet mb-4">
+      <h2 class="h3 mb-3">Qué tardó más</h2>
+      <p>El razonamiento más largo que sí terminó es el de 25000 pesos a los 5 días. Traza 891c187a. El grafo duró 57,6 s. El span suelto más lento es una llamada al modelo del analista: ChatGoogleGenerativeAI, 13,4 s, 496 tokens. La recuperación no es el cuello de botella.</p>
+      <ul class="mb-3">
+        <li>Las 8 llamadas al modelo suman 56,6 s.</li>
+        <li>VectorStoreRetriever tardó 0,46 s.</li>
+        <li>validar_reembolso tardó 2,8 ms.</li>
+      </ul>
+      <p class="mb-0">La recuperación más lenta de las consultas que sí cerraron fue 1,35 s (8000 pesos, 3 días). Sigue siendo mucho menos que cualquier llamada larga al modelo.</p>
+    </section>
+
+    <section class="sheet mb-4">
+      <h2 class="h3 mb-3">Red y procesamiento</h2>
+      <p>La espera de red es ChatGoogleGenerativeAI y EmbedContent. Las dos salen de la máquina hacia la API de Gemini. El procesamiento local es validar_reembolso (0,3 ms a 2,8 ms) y el ruteo (ruta_supervisor, cerca de 1 ms).</p>
+      <p class="mb-0">Casi todo VectorStoreRetriever es la llamada de embeddings, no la búsqueda en Chroma. EmbedContent va de 0,4 s a 1,3 s. Cuando el span de la base falla a propósito, sin llegar a embeddings, dura unos 3 ms.</p>
+    </section>
+
+    <section class="sheet mb-4">
+      <h2 class="h3 mb-3">Tokens y costo</h2>
+      <p>Traza 891c187a, ocho llamadas al modelo. AsyncGenerateContent repite los mismos tokens, así que no se suma dos veces.</p>
+      <div class="table-responsive">
+        <table class="table mb-4">
+          <thead><tr><th></th><th>Tokens</th><th>Si se pagara</th></tr></thead>
+          <tbody>
+            <tr><td>Entrada</td><td>2014</td><td>0,00060 USD</td></tr>
+            <tr><td>Salida</td><td>300</td><td>0,00075 USD</td></tr>
+            <tr><td>Total</td><td>2314</td><td>0,0014 USD</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Precio publicado de gemini-3.5-flash-lite: 0,30 USD por millón de entrada y 2,50 USD por millón de salida. La sesión corrió en el free tier. El 429 de Gemini lo dice explícito, así que esta corrida no se cobró.</p>
+      <p class="mb-0">La consulta de 5000 pesos a los 15 días hizo un trabajo parecido (1969 de entrada y 287 de salida) y terminó en 21,3 s. La de 57,6 s no razonó más: se quedó esperando la API.</p>
+    </section>
+
+    <section class="sheet mb-4">
+      <h2 class="h3 mb-3">El fallo a propósito</h2>
+      <p>Después de las cinco, la búsqueda levantó <code>RuntimeError: Base de políticas no disponible</code> antes de tocar Chroma. En la traza 14948c78 (8,9 s) el error sube así:</p>
+      <div class="trace trace-error mb-4">
+        <div class="rowline"><span>LangGraph</span> <span class="pill bad">error</span></div>
+        <div class="rowline d1"><span>investigador</span> <span class="pill bad">error</span></div>
+        <div class="rowline d2"><span>tools</span> <span class="pill bad">error</span></div>
+        <div class="rowline d3"><span>buscar_documentos</span> <span class="pill bad">error</span></div>
+      </div>
+      <p class="mb-0">El modelo del investigador había respondido bien (6,4 s, status OK). El fallo está en la herramienta, no en la generación. El span chroma.buscar_politica quedó en ERROR con el mismo mensaje, en unos 3 ms.</p>
+    </section>
+
+    <section class="sheet mb-5">
+      <h2 class="h3 mb-3">Cómo bajarlo</h2>
+      <p>Cada caso bueno hace 8 llamadas al modelo en serie. Tres son del supervisor, y el camino ya está fijado: primero el investigador, después el analista, después cerrar. En la traza larga esas tres llamadas fueron 2,2 s, 11,5 s y 1,2 s.</p>
+      <p class="mb-0">Sacar el modelo del ruteo y dejar la regla que ya elige al que falta corta esa espera y unos 200 tokens de entrada por llamada. La política es un texto fijo: cachear el embedding evita repetir EmbedContent en cada pregunta.</p>
+    </section>
+
+    <footer class="pb-4">Phoenix local · proyecto tienda-lumen · unidad 7.1</footer>
+  </main>
+</body>
+</html>
