@@ -65,20 +65,20 @@ respuesta = "No lo sé"`,
   {
     numero: 7,
     titulo: "Ver qué pasó",
-    estado: "falta",
-    idea: "Una API y un registro de cada paso, para no adivinar por qué respondió eso.",
-    pasos: ["API", "Redis", "Traza"],
-    codigo: `# cada llamada deja una huella
-# se puede abrir y leer`,
+    estado: "lista",
+    idea: "La API devuelve un job_id al toque. Redis guarda el estado y Phoenix muestra cada paso.",
+    pasos: ["Job id", "Redis", "Pausa"],
+    codigo: `POST /tasks → job_id
+# si el reembolso saldría, espera un sí o un no`,
   },
   {
     numero: 8,
     titulo: "Juntar todo",
-    estado: "falta",
-    idea: "Un solo sistema: recuerda, razona y se levanta con un comando.",
-    pasos: ["RAG", "Agentes", "API"],
-    codigo: `./run.sh
-# local, sin nube obligatoria`,
+    estado: "hoy",
+    idea: "Tienda Lumen: juegos en digital o en caja. El RAG, el supervisor y la API viven en otro repo.",
+    pasos: ["Chroma", "Supervisor", "Un comando"],
+    codigo: `# /Users/franco/developer/tienda-lumen
+./run.sh`,
   },
 ];
 
