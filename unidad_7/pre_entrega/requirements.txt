@@ -1,0 +1,14 @@
+# Dependencias de la API. El repo se instala entero desde la raíz:
+#   python -m pip install -r requirements.txt
+fastapi
+uvicorn
+redis
+langgraph
+langgraph-checkpoint-redis
+langchain-core
+langchain-google-genai
+arize-phoenix
+openinference-instrumentation-langchain
+openinference-instrumentation-google-genai
+python-dotenv
+pydantic

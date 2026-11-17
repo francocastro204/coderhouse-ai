@@ -41,7 +41,8 @@ coderhouse-ai/
     └── pre_entrega/          ← supervisor, investigador y analista
 └── unidad_7/
     ├── 7.1/                  ← trazas del orquestador en Phoenix local
-    └── 7.2/                  ← FastAPI encola en Redis y devuelve un job_id
+    ├── 7.2/                  ← FastAPI encola en Redis y devuelve un job_id
+    └── pre_entrega/          ← API del orquestador, Redis, Phoenix y pausa humana
 ```
 
 ## Qué es cada cosa

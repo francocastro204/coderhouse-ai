@@ -43,5 +43,8 @@ arize-phoenix
 openinference-instrumentation-langchain
 openinference-instrumentation-google-genai
 
-# Unidad 7.2. La API encola el trabajo y el cliente pregunta el estado.
+# Unidad 7. La API encola el trabajo, Redis guarda el estado y el checkpointer.
+fastapi
+uvicorn
 redis
+langgraph-checkpoint-redis

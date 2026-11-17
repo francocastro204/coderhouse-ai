@@ -158,8 +158,12 @@ def modelo_orquestador():
     return primario.with_fallbacks([respaldo])
 
 
-def construir():
-    """Arma el grafo. Los ReAct viven dentro del nodo, no como historial común."""
+def construir(checkpointer=None, con_aprobacion: bool = False):
+    """Arma el grafo. Los ReAct viven dentro del nodo, no como historial común.
+
+    Sin argumentos se comporta como la pre-entrega 6. La pre-entrega 7
+    le pasa el checkpointer de Redis y pide la pausa antes de la síntesis.
+    """
     investigador = crear_investigador(modelo_orquestador())
     analista = crear_analista(modelo_orquestador())
     supervisor_modelo = modelo_orquestador().with_structured_output(DecisionSupervisor)
@@ -342,17 +346,36 @@ def construir():
     )
     workflow.add_edge("investigador", "supervisor")
     workflow.add_edge("analista", "supervisor")
-    workflow.add_conditional_edges(
-        "validar",
-        ruta_validar,
-        {
-            "investigador": "investigador",
-            "analista": "analista",
-            "sintesis": "sintesis",
-        },
-    )
+    if con_aprobacion:
+        from unidad_7.pre_entrega.app.hitl import nodo_aprobacion, ruta_aprobacion
+
+        workflow.add_node("aprobacion", nodo_aprobacion)
+        workflow.add_conditional_edges(
+            "validar",
+            ruta_validar,
+            {
+                "investigador": "investigador",
+                "analista": "analista",
+                "sintesis": "aprobacion",
+            },
+        )
+        workflow.add_conditional_edges(
+            "aprobacion",
+            ruta_aprobacion,
+            {"sintesis": "sintesis", "fin": END},
+        )
+    else:
+        workflow.add_conditional_edges(
+            "validar",
+            ruta_validar,
+            {
+                "investigador": "investigador",
+                "analista": "analista",
+                "sintesis": "sintesis",
+            },
+        )
     workflow.add_edge("sintesis", END)
-    return workflow.compile()
+    return workflow.compile(checkpointer=checkpointer)
 
 
 def _usos(state: EstadoOrquestador, agente: str) -> int:

@@ -9,7 +9,7 @@ import operator
 from typing import Annotated
 
 from langgraph.graph import MessagesState
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 
 class Aporte(TypedDict):
@@ -37,3 +37,5 @@ class EstadoOrquestador(MessagesState):
     pasos: int
     aportes: Annotated[list[Aporte], operator.add]
     ruta: Annotated[list[str], operator.add]
+    # La pre-entrega 7 lo usa cuando un reembolso queda a la espera de una persona.
+    aprobado: NotRequired[bool]
